@@ -13,11 +13,11 @@ import {
   Zap,
 } from "lucide-react";
 
-import { Header } from "@/components/site/Header";
-import { Footer } from "@/components/site/Footer";
-import heroImg from "@/assets/hero-mietitrebbia.jpg";
-import magazzinoImg from "@/assets/magazzino.jpg";
-import officinaImg from "@/assets/officina.jpg";
+import { Header } from "../components/site/Header";
+import { Footer } from "../components/site/Footer";
+import heroImg from "../assets/hero-mietitrebbia.jpg";
+import magazzinoImg from "../assets/magazzino.jpg";
+import officinaImg from "../assets/officina.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -120,7 +120,8 @@ function Index() {
             alt="Mietitrebbia al lavoro in un campo di grano al tramonto"
             width={1920}
             height={1088}
-            className="absolute inset-0 size-full object-cover"
+            decoding="async"
+            className="absolute inset-0 size-full object-cover transform-gpu"
           />
           <div className="absolute inset-0 overlay-hero" />
           <div className="relative mx-auto max-w-7xl px-5 py-24 text-steel-foreground md:py-36">
@@ -222,6 +223,7 @@ function Index() {
               width={1408}
               height={1008}
               loading="lazy"
+              decoding="async"
               className="rounded-lg object-cover shadow-panel"
             />
           </div>
@@ -296,7 +298,7 @@ function Index() {
                   Nome e azienda
                   <input
                     required
-                    className="rounded-md border border-input bg-card px-3 py-2.5 outline-none focus:border-primary"
+                    className="rounded-md border border-input bg-card px-3 py-2.5 outline-none focus:border-primary resize-none transform-gpu will-change-transform"
                     placeholder="Mario Rossi"
                   />
                 </label>
@@ -304,7 +306,7 @@ function Index() {
                   Telefono
                   <input
                     required
-                    className="rounded-md border border-input bg-card px-3 py-2.5 outline-none focus:border-primary"
+                    className="rounded-md border border-input bg-card px-3 py-2.5 outline-none focus:border-primary resize-none transform-gpu will-change-transform"
                     placeholder="333 1234567"
                   />
                 </label>
@@ -312,7 +314,7 @@ function Index() {
               <label className="grid gap-2 text-sm">
                 Macchina / modello
                 <input
-                  className="rounded-md border border-input bg-card px-3 py-2.5 outline-none focus:border-primary"
+                  className="rounded-md border border-input bg-card px-3 py-2.5 outline-none focus:border-primary resize-none transform-gpu will-change-transform"
                   placeholder="Es. Laverda M150, Claas Dominator 108"
                 />
               </label>
@@ -320,7 +322,7 @@ function Index() {
                 Ricambio o guasto
                 <textarea
                   rows={5}
-                  className="rounded-md border border-input bg-card px-3 py-2.5 outline-none focus:border-primary"
+                  className="rounded-md border border-input bg-card px-3 py-2.5 outline-none focus:border-primary resize-none transform-gpu will-change-transform"
                   placeholder="Descrivi il pezzo che cerchi o il problema riscontrato"
                 />
               </label>
