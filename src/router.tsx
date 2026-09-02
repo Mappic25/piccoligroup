@@ -14,3 +14,15 @@ export const getRouter = () => {
 
   return router;
 };
+
+const router = getRouter()
+
+const rootElement = document.getElementById('root')!
+if (rootElement && !rootElement.innerHTML) {
+    const root = ReactDOM.createRoot(rootElement)
+    root.render(
+        <React.StrictMode>
+            <RouterProvider router={router} />
+        </React.StrictMode>,
+    )
+}
