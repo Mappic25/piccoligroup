@@ -109,7 +109,9 @@ const numeri = [
 
 function Index() {
   return (
-    <div id="top">
+    <div id="top" className="relative bg-card p-6 rounded-lg shadow-md"
+    style={{ contain: 'paint'}}
+    >
       <Header />
 
       <main>
