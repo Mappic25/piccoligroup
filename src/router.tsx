@@ -1,5 +1,7 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import {createRouter, RouterProvider} from "@tanstack/react-router";
 import { QueryClient } from "@tanstack/react-query";
-import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
 export const getRouter = () => {
@@ -22,7 +24,7 @@ if (rootElement && !rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement)
     root.render(
         <React.StrictMode>
-            <RouterProvider router={router} />
+          <RouterProvider router={router} />
         </React.StrictMode>,
     )
 }
