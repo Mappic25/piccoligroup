@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 430" role="img" aria-labelledby="title desc">
+  <title id="title">PCM srl</title>
+  <desc id="desc">Part. mietitrebbie, Comp. oleodinamici, Macchine agricole</desc>
+  <g fill="#111318" font-family="Archivo, Arial, Helvetica, sans-serif">
+    <text x="18" y="118" font-size="150" font-weight="700">P</text>
+    <text x="18" y="260" font-size="150" font-weight="700">C</text>
+    <text x="18" y="402" font-size="150" font-weight="700">M</text>
+    <text x="130" y="104" font-size="48" font-weight="700">Part. mietitrebbie</text>
+    <text x="130" y="245" font-size="48" font-weight="700">Comp. oleodinamici</text>
+    <text x="130" y="386" font-size="48" font-weight="700">Macchine agricole</text>
+  </g>
+</svg>
