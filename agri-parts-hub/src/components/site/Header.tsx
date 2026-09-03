@@ -8,7 +8,7 @@ const links = [
   { href: "#azienda", label: "Azienda" },
   { href: "#contatti", label: "Contatti" },
 ];
-
+<img src="/logo_piccoligroup_48.png" alt="Piccoli Group" className="logo" />
 export function Header() {
   const [open, setOpen] = useState(false);
 
