@@ -95,10 +95,10 @@ export function MapComponent() {
         logoImg.style.filter = "brightness(0) drop-shadow(0 2px 6px rgba(0,0,0,0.4)) drop-shadow(0 1px 2px rgba(0,0,0,0.3))";
         markerLabel.current.appendChild(logoImg);
         
-        markerLabel.current.style.position = "static";
+        markerLabel.current.style.position = "absolute";
         markerLabel.current.style.whiteSpace = "nowrap";
         markerLabel.current.style.pointerEvents = "auto";
-        markerLabel.current.style.zIndex = "100";
+        markerLabel.current.style.zIndex = "500";
         markerLabel.current.style.transition = "opacity 0.2s ease-in-out";
         
         // Aggiungi il label al contenitore della mappa
@@ -195,7 +195,7 @@ export function MapComponent() {
   return (
     <div
       ref={mapContainer}
-      className="relative aspect-square w-full max-w-xs overflow-hidden rounded-lg border border-border shadow-lift"
+      className="static aspect-square w-full max-w-xs overflow-hidden rounded-lg border border-border shadow-lift"
       style={{ height: "320px", width: "320px" }}
     >
       {isLoading && (
