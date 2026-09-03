@@ -98,7 +98,7 @@ export function MapComponent() {
         markerLabel.current.style.position = "absolute";
         markerLabel.current.style.whiteSpace = "nowrap";
         markerLabel.current.style.pointerEvents = "auto";
-        markerLabel.current.style.zIndex = "9999";
+        markerLabel.current.style.zIndex = "100";
         markerLabel.current.style.transition = "opacity 0.2s ease-in-out";
         
         // Aggiungi il label al contenitore della mappa
