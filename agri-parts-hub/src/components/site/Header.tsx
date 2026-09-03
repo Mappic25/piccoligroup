@@ -13,7 +13,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-index-9999 surface-steel border-b border-border/40 backdrop-blur">
+    <header className="absolute top-0 z-index-9999 surface-steel border-b border-border/40 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3.5">
         <a href="#top" className="flex items-baseline gap-2">
           <span className="font-display text-2xl font-extrabold tracking-tight">PCM</span>

@@ -95,7 +95,7 @@ export function MapComponent() {
         logoImg.style.filter = "brightness(0) drop-shadow(0 2px 6px rgba(0,0,0,0.4)) drop-shadow(0 1px 2px rgba(0,0,0,0.3))";
         markerLabel.current.appendChild(logoImg);
         
-        markerLabel.current.style.position = "absolute";
+        markerLabel.current.style.position = "static";
         markerLabel.current.style.whiteSpace = "nowrap";
         markerLabel.current.style.pointerEvents = "auto";
         markerLabel.current.style.zIndex = "100";
