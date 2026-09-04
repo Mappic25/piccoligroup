@@ -113,13 +113,13 @@ export function MapComponent() {
             // Calcola la posizione del marker nelle coordinate del container
             const point = map.current.latLngToContainerPoint([41.975, 15.005]);
             
-            // Calcola la posizione iniziale relative al container
-            let left = point.x + 15;
-            let top = point.y - 45;
-            
-            // Ottieni le dimensioni del label
+            // Ottieni prima le dimensioni del label
             const labelWidth = markerLabel.current.offsetWidth || 80;
             const labelHeight = markerLabel.current.offsetHeight || 32;
+
+            // Posiziona il logo IN BASSO rispetto al segnaposto e ben centrato
+            let left = point.x - (labelWidth / 2); // Centra il logo sotto lo spillo
+            let top = point.y + 10;                // Lo sposta in basso sotto la punta
             
             // Clamp la posizione ai bordi del container
             const containerWidth = mapContainer.current.offsetWidth;
@@ -195,8 +195,8 @@ export function MapComponent() {
   return (
     <div
       ref={mapContainer}
-      className="static aspect-square w-full max-w-xs overflow-hidden rounded-lg border border-border shadow-lift"
-      style={{ height: "320px", width: "320px" }}
+      className="static aspect-square w-full h-full min-h-[450px] overflow-hidden rounded-xl border border-border shadow-lift"
+      style={{ height: "100%", width: "100%" }}
     >
       {isLoading && (
         <div className="flex items-center justify-center h-full bg-muted">

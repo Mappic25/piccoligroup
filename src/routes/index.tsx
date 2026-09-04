@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -16,9 +16,9 @@ import {
   Zap,
 } from "lucide-react";
 
-import { Header } from "@/components/site/Header";
-import { Footer } from "@/components/site/Footer";
-import { MapComponent } from "@/components/MapComponent";
+import { Header } from "../components/site/Header.tsx";
+import { Footer } from "../components/site/Footer.tsx";
+import { MapComponent } from "../components/MapComponent.tsx";
 import {
   Carousel,
   type CarouselApi,
@@ -26,8 +26,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import officinaImg from "@/assets/officina.jpg";
+} from "../components/ui/carousel.tsx";
 
 function WhatsappIcon() {
   return (
@@ -56,6 +55,10 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content:
           "Specialisti in ricambi mietitrebbie Arbos, Claas, New Holland, Fiatagri, Laverda. Officina e oleodinamica a Termoli (CB).",
+      },
+      {
+        property: "og:image",
+        content: "https://www.piccoligroup.it/logo_piccoligroup_google.jpeg",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -214,24 +217,25 @@ const magazzinoPhotos = [
 ];
 
 function Index() {
+
   const [photoNames, setPhotoNames] = useState<string[]>([]);
   const [officinaApi, setOfficinaApi] = useState<CarouselApi>();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleAddPhotos = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddPhotos = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
       const newPhotos = Array.from(files).map((file) => file.name);
       setPhotoNames((prev) => [...prev, ...newPhotos]);
     }
-  };
+  }, []);
 
-  const handleRemovePhoto = (index: number) => {
+  const handleRemovePhoto = useCallback((index: number) => {
     setPhotoNames((prev) => prev.filter((_, i) => i !== index));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (!officinaApi) {
@@ -242,8 +246,38 @@ function Index() {
       officinaApi.scrollNext();
     }, 3000);
 
-    return () => window.clearInterval(interval);
+    return () => clearInterval(interval);
   }, [officinaApi]);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const macchina = formData.get("macchina");
+    const nome = formData.get("nome");
+    const telefono = formData.get("telefono");
+    const ricambio = formData.get("ricambio");
+
+    const subject = `Richiesta ricambio - ${macchina}`;
+    const body = [
+      `Nome e azienda: ${nome}`,
+      `Telefono: ${telefono}`,
+      `Macchina / modello: ${macchina}`,
+      `Ricambio o guasto: ${ricambio}`,
+      photoNames.length > 0 ? `Foto allegata: ${photoNames.join(", ")}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=pcmsrl2001%40libero.it&su=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    const mailWindow = window.open(gmailUrl, "_blank");
+
+    if (!mailWindow) {
+      window.location.assign(gmailUrl);
+    }
+  };
 
   return (
     <div id="top">
@@ -528,55 +562,69 @@ function Index() {
           </div>
         </section>
 
-        {/* CONTATTI */}
-        <section id="contatti" className="scroll-mt-24 border-t border-border bg-card">
-          <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 lg:grid-cols-[1fr_1.1fr]">
-            <div>
-              <div className="rule-amber">
-                <p className="eyebrow text-muted-foreground">Contatti</p>
-                <h2 className="mt-2 text-3xl md:text-5xl">Hai bisogno di aiuto?</h2>
-              </div>
-              <p className="mt-4 text-muted-foreground">
-                Indica modello, anno e numero di telaio o codice originale del particolare ricambio:
-                ti confermiamo disponibilità e prezzo. Non esitate a contattarci anche per eventuali
-                guasti o problemi di ogni tipo, ci pensiamo noi!
-              </p>
-              <div className="mt-8 space-y-2 text-sm">
-                <a href="tel:+390875752488" className="flex items-center gap-3 hover:text-primary">
-                  <Phone className="size-5 text-primary" /> Tel. (+39) 0875 752488
-                </a>
-                <a
-                  href="https://wa.me/390875752488"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Contattaci su WhatsApp"
-                  className="flex items-center gap-3 hover:text-primary"
-                >
-                  <span className="text-primary">
-                    <WhatsappIcon />
-                  </span>{" "}
-                  WhatsApp
-                </a>
-                <a
-                  href="mailto:pcmsrl2001@libero.it"
-                  className="flex items-center gap-3 hover:text-primary"
-                >
-                  <Mail className="size-5 text-primary" /> pcmsrl2001@libero.it
-                </a>
-                <a
-                  href="https://maps.google.com/?q=Via+dei+Gelsi+22,+86039+Termoli,+Italy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start gap-3 hover:text-primary transition-all"
-                >
-                  <MapPin className="size-5 shrink-0 text-primary" /> Via dei Gelsi 22, 86039
-                  Termoli (CB)
-                </a>
-              </div>
-              <MapComponent />
-            </div>
+{/* CONTATTI */}
+<section id="contatti" className="scroll-mt-24 border-t border-border bg-card">
+  <div className="mx-auto grid max-w-7xl items-start gap-12 px-5 py-20 lg:grid-cols-2">
+    
+    {/* COLONNA SINISTRA: Informazioni di contatto */}
+    <div>
+      <div className="rule-amber">
+        <p className="eyebrow text-muted-foreground">Contatti</p>
+        <h2 className="mt-2 text-3xl md:text-5xl">Hai bisogno di aiuto?</h2>
+      </div>
 
-            <form
+      <p className="mt-4 text-base md:text-lg text-muted-foreground">
+        Indica modello, anno e numero di telaio o codice originale del particolare ricambio:
+        ti confermiamo disponibilità e prezzo. Non esitate a contattarci anche per eventuali
+        guasti o problemi di ogni tipo, ci pensiamo noi!
+      </p>
+
+      <div className="mt-8 space-y-5 text-lg md:text-xl font-medium">
+        <a href="tel:+390875752488" className="flex items-center gap-4 hover:text-primary">
+          <Phone className="size-7 shrink-0 text-primary" /> Tel. (+39) 0875 752488
+        </a>
+
+        <a
+          href="https://wa.me/390875752488"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Contattaci su WhatsApp"
+          className="flex items-center gap-4 hover:text-primary"
+        >
+          <span className="size-7 shrink-0 text-primary flex items-center justify-center">
+            <WhatsappIcon />
+          </span>
+          WhatsApp
+        </a>
+
+        <a
+          href="mailto:pcmsrl2001@libero.it"
+          className="flex items-center gap-4 hover:text-primary"
+        >
+          <Mail className="size-7 shrink-0 text-primary" /> pcmsrl2001@libero.it
+        </a>
+
+        <a
+          href="https://maps.google.com/?q=Via+dei+Gelsi+22,+86039+Termoli,+Italy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-start gap-4 hover:text-primary transition-all"
+        >
+          <MapPin className="size-7 shrink-0 text-primary mt-0.5" /> Via dei Gelsi 22, 86039
+          Termoli (CB)
+        </a>
+      </div>
+    </div>
+
+    {/* COLONNA DESTRA: Contenitore mappa isolato (z-0 isolate) per non passare sopra l'header */}
+    <div className="isolate relative z-0 w-full h-[500px] lg:h-[550px] rounded-xl overflow-hidden border border-border shadow-panel">
+      <MapComponent />
+    </div>
+
+  </div>
+</section>
+            {/* <form
+            noValidate
               className="grid gap-4 rounded-lg border border-border bg-background p-7 shadow-lift"
               onSubmit={(event) => {
                 event.preventDefault();
@@ -587,7 +635,7 @@ function Index() {
                   `Telefono: ${formData.get("telefono")}`,
                   `Macchina / modello: ${formData.get("macchina")}`,
                   `Ricambio o guasto: ${formData.get("ricambio")}`,
-                  photoName ? `Foto allegata: ${photoName}` : "",
+                  photoNames.length > 0 ? `Foto allegata: ${photoNames.join(", ")}` : "",
                 ]
                   .filter(Boolean)
                   .join("\n");
@@ -671,14 +719,13 @@ function Index() {
                   type="file"
                   accept="image/*"
                   multiple
-                  required={photoNames.length === 0}
                   className="sr-only"
                   onChange={handleAddPhotos}
                 />
                 {photoNames.length > 0 && (
                   <div className="space-y-2 rounded-md border border-border bg-card/50 p-4">
                     {photoNames.map((photo, index) => (
-                      <div key={index} className="flex items-center justify-between">
+                      <div key={`${photo}-${index}`} className="flex items-center justify-between">
                         <span className="truncate text-xs text-muted-foreground">{photo}</span>
                         <button
                           type="button"
@@ -699,9 +746,7 @@ function Index() {
               <p className="text-xs text-muted-foreground">
                 Preferisci parlarne? Chiamaci allo (+39) 0875 752488 negli orari di apertura.
               </p>
-            </form>
-          </div>
-        </section>
+            </form> */}
       </main>
 
       <Footer />
